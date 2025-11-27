@@ -1,0 +1,9 @@
+﻿--- Repo: c:\Users\Abhijeet\Desktop\CDAC\MyCafe\FlowerDoor._.Cafe
+Local user.name:
+Abhilasha
+Local user.email:
+abhilashasthakur2@gmail.com
+Global user.name:
+Abhilasha
+Global user.email:
+abhilashasthakur2@gmail.com
