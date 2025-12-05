@@ -1,13 +1,19 @@
 /* ================= GLOBAL ================= */
 :root {
   /* Light Mode Palette (Sakura & Coffee) */
-  --primary-color: #d08c8c; /* Dusty Pink */
-  --secondary-color: #e6ccb2; /* Latte Foam */
-  --accent-color: #ddb892; /* Warm Sand */
-  --text-dark: #4a3b32; /* Dark Coffee */
-  --bg-cream: #fffcf5; /* Soft Cream */
+  --primary-color: #d08c8c;
+  /* Dusty Pink */
+  --secondary-color: #e6ccb2;
+  /* Latte Foam */
+  --accent-color: #ddb892;
+  /* Warm Sand */
+  --text-dark: #4a3b32;
+  /* Dark Coffee */
+  --bg-cream: #fffcf5;
+  /* Soft Cream */
   --white: #ffffff;
-  --panel-bg: #fff0f3; /* Very pale pink */
+  --panel-bg: #fff0f3;
+  /* Very pale pink */
   --btn-hover: #b56565;
   --shadow-color: rgba(208, 140, 140, 0.2);
 }
@@ -20,10 +26,23 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Dark Mode Palette (Coffee/Dark Academia) */
+body.dark-mode {
+  --bg-cream: #2c241b;
+  --text-dark: #e6ccb2;
+  --panel-bg: #3e3228;
+  --white: #1a1510;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --secondary-color: #5d4037;
+  --primary-color: #d4a373;
+  --btn-hover: #b08968;
+}
+
 /* ================= FLOATING DARK MODE BUTTON ================= */
 .theme-toggle-btn {
   position: fixed;
-  top: 85px; /* Moved down slightly to avoid header conflict */
+  top: 85px;
+  /* Moved down slightly to avoid header conflict */
   right: 20px;
   z-index: 1000;
   background: var(--white);
@@ -35,76 +54,31 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  color: #9d8189; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-}
-
-.theme-toggle-btn:hover {
-  transform: scale(1.1) rotate(15deg);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* ================= DARK MODE COLORS (LAVENDER NIGHT THEME) ================= */
-body.dark-mode {
-  --primary-color: #b5838d;
-  --secondary-color: #6d6875;
-  --accent-color: #4a4e69;
-  --text-dark: #f2e9e4;
-  --bg-cream: #22223b; /* Deep Night */
-  --white: #4a4e69;
-  --panel-bg: #2a2a4a;
-  --btn-hover: #e5989b;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode .theme-toggle-btn {
-  background: #4a4e69;
-  color: #f2e9e4;
-}
-
-body.dark-mode img {
-  filter: brightness(0.85);
-}
-
-/* ================= HEADER ================= */
-header {
-  padding: 15px 0;
-  border-bottom: 2px solid var(--secondary-color);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  border-radius: 0 0 25px 25px;
-  box-shadow: 0 4px 20px var(--shadow-color);
-}
-
-body.dark-mode header {
-  background: rgba(34, 34, 59, 0.9);
-}
-
-.logo img {
-  width: 70px;
-  transition: transform 0.3s ease;
-}
-
-.logo img:hover {
-  transform: rotate(-10deg) scale(1.05);
-}
-
-.menu a {
-  font-size: 16px;
-  font-weight: 600;
   color: var(--text-dark) !important;
-  margin-left: 15px;
-  padding: 8px 15px;
-  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-.menu a:hover, .menu a.active {
+.theme-toggle-btn:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* ================= LOGO ================= */
+.logo img {
+  max-width: 150px;
+  height: auto;
+}
+
+/* ================= NAVBAR ================= */
+.menu .nav-link {
+  color: var(--text-dark);
+  border-radius: 20px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.menu a:hover,
+.menu a.active {
   background-color: var(--primary-color);
   color: var(--white) !important;
   transform: translateY(-2px);
@@ -139,7 +113,7 @@ body.dark-mode header {
   font-family: 'Playfair Display', serif;
   font-weight: 800;
   color: var(--primary-color);
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
   margin-bottom: 10px;
 }
 
@@ -226,7 +200,7 @@ body.dark-mode header {
   border-radius: 25px;
   padding: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 1px solid transparent;
 }
@@ -259,7 +233,8 @@ body.dark-mode header {
 /* BUTTON */
 .pastel-btn {
   background: var(--primary-color);
-  color: #fff !important; /* Force white text */
+  color: #fff !important;
+  /* Force white text */
   border: none;
   border-radius: 50px;
   padding: 10px 25px;
@@ -321,6 +296,28 @@ footer p:hover {
 }
 
 /* ================= MANGA & MENU SPECIFIC ================= */
+.manga-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  height: 100%;
+}
+
+.manga-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.manga-cover {
+  width: 100%;
+  height: 300px !important;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
 .menu-section-title {
   color: var(--primary-color);
   border-bottom: 2px dashed var(--secondary-color);
@@ -336,29 +333,4 @@ footer p:hover {
   font-weight: 700;
   display: flex;
   justify-content: space-between;
-}
-
-.price-tag {
-  color: var(--primary-color);
-}
-
-.manga-box {
-  background: var(--white);
-  border-radius: 15px;
-  padding: 15px;
-  margin-bottom: 20px;
-  transition: transform 0.3s;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.manga-box:hover {
-  transform: scale(1.03);
-}
-
-.manga-cover {
-  height: 250px;
-  width: auto;
-  border-radius: 10px;
-  box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-  margin-bottom: 15px;
 }
