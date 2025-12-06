@@ -38,6 +38,21 @@ body.dark-mode {
   --btn-hover: #b08968;
 }
 
+body.dark-mode .accordion-button {
+  background-color: var(--panel-bg);
+  color: #ffffff;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}
+
+body.dark-mode .accordion-body {
+  background-color: var(--bg-cream);
+  color: #ffffff;
+}
+
 /* ================= FLOATING DARK MODE BUTTON ================= */
 .theme-toggle-btn {
   position: fixed;
@@ -65,7 +80,7 @@ body.dark-mode {
 
 /* ================= LOGO ================= */
 .logo img {
-  max-width: 150px;
+  max-width: 80px;
   height: auto;
 }
 
@@ -333,4 +348,19 @@ footer p:hover {
   font-weight: 700;
   display: flex;
   justify-content: space-between;
+}
+/* Force Dark Mode Overrides */
+body.dark-mode .accordion-button {
+  background-color: var(--panel-bg) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+  background-color: var(--secondary-color) !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .accordion-body {
+  background-color: var(--bg-cream) !important;
+  color: #ffffff !important;
 }
