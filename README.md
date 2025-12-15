@@ -4,7 +4,7 @@ Welcome to **Flowerdoor Café**! A unique digital experience where coffee meets 
 
 ## ✨ Features
 
-- **☕ Café Delights**: Browse our menu of hot brews like Strawberry Latte and Sakura Tea, along with sweet treats like Blueberry Cheesecake.
+- **☕ Café Delights**:  Browse our menu of hot brews like Strawberry Latte and Sakura Tea, along with sweet treats like Blueberry Cheesecake.
 - **💐 Flower Shop**: Explore our collection of fresh, seasonal flowers and custom arrangements.
 - **📖 Manga Library**: A dedicated section for manga lovers, featuring reading passes and an "Otaku Club" membership.
 - **🎨 Pastel Aesthetics**: A soothing, visually appealing design using soft pastel colors and modern UI elements.
