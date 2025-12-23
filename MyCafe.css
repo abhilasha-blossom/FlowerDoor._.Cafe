@@ -136,6 +136,11 @@ body.dark-mode .accordion-body {
   align-items: center;
 }
 
+.banner>* {
+  width: 100%;
+  /* Ensure Carousel or Row takes full width */
+}
+
 .banner::before {
   content: '';
   position: absolute;
