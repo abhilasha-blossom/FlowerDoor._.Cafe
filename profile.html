@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="MyCafe.css?v=10" />
 </head>
 
-<body>
+<body class="profile-page"> <!-- Add class for specific background -->
+
     <!-- 🌙 FLOATING DARK MODE BUTTON -->
     <button id="themeToggle" class="theme-toggle-btn">
         <i id="themeIcon" class="fa-solid fa-moon"></i>
@@ -19,41 +20,41 @@
 
     <!-- HEADER / COVER IMAGE -->
     <div class="profile-cover">
-        <!-- Back Button Overlay -->
-        <a href="MyCafe.html" class="btn btn-light rounded-pill position-absolute top-10 start-10 m-4 shadow-sm"
-            style="opacity: 0.9;">
-            <i class="fa-solid fa-arrow-left"></i> Back to Café
+        <a href="MyCafe.html" class="btn btn-light rounded-circle shadow-sm position-absolute top-0 start-0 m-4"
+            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-arrow-left"></i>
         </a>
     </div>
 
     <!-- MAIN PROFILE CONTENT -->
     <div class="profile-container">
-        <div class="glass-card text-center">
+        <div class="glass-card">
 
-            <!-- PROFILE INFO -->
+            <!-- PROFILE INFO (Pulled Up) -->
             <div class="profile-avatar-container">
                 <img src="https://cdn-icons-png.flaticon.com/128/64/64572.png" id="profileImg" class="profile-avatar"
                     alt="User Avatar">
-                <button class="edit-btn-floating" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <button class="edit-btn-floating" data-bs-toggle="modal" data-bs-target="#editProfileModal"
+                    title="Edit Profile">
                     <i class="fa-solid fa-pen"></i>
                 </button>
             </div>
 
-            <h2 id="profileName" class="display-6 fw-bold" style="font-family: 'Playfair Display', serif;">Loading...
-            </h2>
-            <p id="profileEmail" class="text-muted mb-4">...</p>
+            <h2 id="profileName" class="display-5 fw-bold mb-1" style="font-family: 'Playfair Display', serif;">
+                Loading...</h2>
+            <p id="profileEmail" class="text-muted mb-5" style="letter-spacing: 1px;">...</p>
 
-            <hr class="w-50 mx-auto my-4" style="opacity: 0.1;">
-
-            <!-- TWO COLUMN GRID: WISHLIST & ORDERS -->
-            <div class="row text-start g-4">
+            <!-- TWO COLUMN GRID -->
+            <div class="row text-start g-5">
 
                 <!-- LEFT: WISHLIST -->
                 <div class="col-lg-6">
-                    <h4 class="mb-3 text-danger"><i class="fa-solid fa-heart"></i> My Wishlist</h4>
-                    <div id="wishlistContainer" class="row g-2">
+                    <div class="text-center mb-4">
+                        <span class="section-title">My Wishlist</span>
+                    </div>
+                    <div id="wishlistContainer" class="row g-3">
                         <!-- Dynamic content -->
-                        <div class="col-12 text-center py-4 bg-light rounded-3">
+                        <div class="col-12 text-center py-4 rounded-3 border border-light bg-white bg-opacity-50">
                             <p class="text-muted mb-0">No favorites yet.</p>
                         </div>
                     </div>
@@ -61,8 +62,11 @@
 
                 <!-- RIGHT: ORDER HISTORY -->
                 <div class="col-lg-6">
-                    <h4 class="mb-3 text-primary"><i class="fa-solid fa-clock-rotate-left"></i> Order History</h4>
-                    <div id="orderHistory" class="bg-light p-3 rounded-3" style="max-height: 400px; overflow-y: auto;">
+                    <div class="text-center mb-4">
+                        <span class="section-title">Order History</span>
+                    </div>
+                    <div id="orderHistory" class="p-3 rounded-3 border border-light bg-white bg-opacity-50"
+                        style="max-height: 400px; overflow-y: auto;">
                         <!-- Dynamic content -->
                         <div class="text-center py-4">
                             <p class="text-muted mb-0">No orders placed.</p>
