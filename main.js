@@ -201,6 +201,7 @@
       div.className = 'col-md-4';
       div.innerHTML = `
             <div class="product-box text-center" data-aos="fade-up">
+                <button class="fav-btn" data-name="${item.name}" data-img="${item.image}" data-price="${item.price}"><i class="fa-regular fa-heart"></i></button>
                 <img src="${item.image}" class="img-fluid mb-3 rounded" alt="${item.name}">
                 <h4>${item.name}</h4>
                 <p>${item.description}</p>
@@ -220,6 +221,7 @@
   if (flowerGrid && typeof products !== 'undefined') {
     flowerGrid.innerHTML = products.flowers.map((item, index) => `
       <figure class="col-lg-4 col-md-4 col-6 text-center product-box" data-aos="fade-up" data-aos-delay="${index * 50}">
+        <button class="fav-btn" data-name="${item.name}" data-img="${item.image}" data-price="${item.price}"><i class="fa-regular fa-heart"></i></button>
         <img src="${item.image}" class="img-fluid" alt="${item.name}" />
         <h3>₹ ${item.price}</h3>
         <p>${item.name}</p>

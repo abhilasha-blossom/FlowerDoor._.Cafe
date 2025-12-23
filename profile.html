@@ -52,6 +52,12 @@
                         <!-- Dynamic Rows -->
                         <p class="text-center text-muted">No past orders found.</p>
                     </div>
+
+                    <h4 class="mb-4 mt-5"><i class="fa-solid fa-heart text-danger"></i> My Wishlist</h4>
+                    <div id="wishlistContainer" class="row">
+                        <!-- Dynamic Wishlist -->
+                        <p class="text-center text-muted">No favorites yet. Go explore!</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,6 +93,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadProfile();
             loadOrders();
+            loadWishlist();
         });
 
         function loadProfile() {
