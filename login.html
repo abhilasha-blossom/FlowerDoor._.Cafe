@@ -47,9 +47,14 @@
 <body>
 
     <div class="login-card">
-        <h2 class="mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Welcome Back</h2>
+        <h2 class="mb-4" id="formTitle" style="font-family: 'Playfair Display', serif; color: var(--primary-color);">
+            Welcome Back</h2>
 
         <form id="loginForm">
+            <div class="mb-3 text-start d-none" id="nameGroup">
+                <label class="form-label small text-muted">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Rose">
+            </div>
             <div class="mb-3 text-start">
                 <label class="form-label small text-muted">Email</label>
                 <input type="email" class="form-control" id="email" required placeholder="name@flowerdoor.com">
@@ -59,7 +64,11 @@
                 <input type="password" class="form-control" id="password" required placeholder="••••••••">
             </div>
 
-            <button type="submit" class="btn pastel-btn w-100 mb-3">Sign In</button>
+            <button type="submit" class="btn pastel-btn w-100 mb-3" id="submitBtn">Sign In</button>
+            <p class="text-center small text-muted">
+                <span id="toggleText">New here?</span>
+                <a href="#" onclick="toggleMode()" class="text-primary fw-bold" id="toggleLink">Create an Account</a>
+            </p>
         </form>
 
         <div class="d-flex align-items-center justify-content-center mb-3">
@@ -73,19 +82,57 @@
 
     <script>
         const form = document.getElementById('loginForm');
+        let isSignUp = false;
+
+        function toggleMode() {
+            isSignUp = !isSignUp;
+            const nameGroup = document.getElementById('nameGroup');
+            const title = document.getElementById('formTitle');
+            const btn = document.getElementById('submitBtn');
+            const toggleText = document.getElementById('toggleText');
+            const toggleLink = document.getElementById('toggleLink');
+
+            if (isSignUp) {
+                nameGroup.classList.remove('d-none');
+                document.getElementById('name').required = true;
+                title.innerText = "Join Flowerdoor";
+                btn.innerText = "Create Account";
+                toggleText.innerText = "Already have an account?";
+                toggleLink.innerText = "Sign In";
+            } else {
+                nameGroup.classList.add('d-none');
+                document.getElementById('name').required = false;
+                title.innerText = "Welcome Back";
+                btn.innerText = "Sign In";
+                toggleText.innerText = "New here?";
+                toggleLink.innerText = "Create an Account";
+            }
+        }
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
-            // Simulate Login
+            const nameInput = document.getElementById('name').value;
+
+            // Logic depending on mode
+            const name = isSignUp ? nameInput : email.split('@')[0];
+
             const user = {
-                name: email.split('@')[0], // Use part of email as name
+                name: name,
                 email: email,
                 isGuest: false,
                 avatar: 'https://cdn-icons-png.flaticon.com/128/64/64572.png' // Default Avatar
             };
+
             localStorage.setItem('flowerdoor-user', JSON.stringify(user));
-            window.location.href = 'MyCafe.html';
+
+            // Show cute feedback
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = isSignUp ? '<i class="fa-solid fa-check"></i> Account Created!' : '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
+
+            setTimeout(() => {
+                window.location.href = 'MyCafe.html';
+            }, 1000);
         });
 
         function guestLogin() {
