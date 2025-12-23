@@ -212,7 +212,7 @@
   if (mangaGrid && typeof products !== 'undefined') {
     const mangas = products.manga.filter(m => m.category !== 'Set');
     mangaGrid.innerHTML = mangas.map(item => `
-      <div class="col-xl-3 col-md-6 mb-4">
+      <div class="col-xl-4 col-md-6 mb-4">
         <div class="manga-box text-center">
           <img src="${item.image}" class="img-fluid manga-cover" alt="${item.name}" />
           <h4>${item.name}</h4>
