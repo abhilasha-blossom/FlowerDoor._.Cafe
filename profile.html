@@ -29,7 +29,7 @@
             <div class="col-md-4 mb-4">
                 <div class="pastel-box p-4 text-center">
                     <img src="https://cdn-icons-png.flaticon.com/128/64/64572.png" class="img-fluid rounded-circle mb-3"
-                        style="width: 100px;" alt="User">
+                        style="width: 100px; height: 100px; object-fit: cover;" alt="User" id="profileImg">
                     <h5 id="profileName">Loading...</h5>
                     <p class="text-muted" id="profileEmail">...</p>
                     <button class="btn btn-sm btn-outline-dark rounded-pill mt-2" data-bs-toggle="modal"
@@ -70,56 +70,77 @@
                     </div>
                     <div class="mb-3">
                         <label>Email</label>
-                        <input type="email" class="form-control" id="editEmailInput">
+                        <div class="mb-3">
+                            <label>Profile Picture</label>
+                            <input type="file" class="form-control" id="editAvatarInput" accept="image/*">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="saveProfile()">Save</button>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="saveProfile()">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProfile();
-            loadOrders();
-            loadWishlist();
-        });
+        <script src="main.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                loadProfile();
+                loadOrders();
+                loadWishlist();
+            });
 
-        function loadProfile() {
-            const user = JSON.parse(localStorage.getItem('flowerdoor-user')) || { name: 'Guest User', email: 'guest@flowerdoor.com' };
-            document.getElementById('profileName').innerText = user.name;
-            document.getElementById('profileEmail').innerText = user.email;
-        }
-
-        function editProfile() {
-            const user = JSON.parse(localStorage.getItem('flowerdoor-user')) || { name: 'Guest User', email: 'guest@flowerdoor.com' };
-            document.getElementById('editNameInput').value = user.name;
-            document.getElementById('editEmailInput').value = user.email;
-            new bootstrap.Modal(document.getElementById('editProfileModal')).show();
-        }
-
-        function saveProfile() {
-            const name = document.getElementById('editNameInput').value;
-            const email = document.getElementById('editEmailInput').value;
-            localStorage.setItem('flowerdoor-user', JSON.stringify({ name, email }));
-            location.reload();
-        }
-
-        function loadOrders() {
-            const allOrders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
-            // In a real app we would filter by user ID, here we show all local orders for demo
-
-            const container = document.getElementById('orderHistory');
-
-            if (allOrders.length === 0) {
-                container.innerHTML = '<p class="text-center text-muted">No orders yet.</p>';
-                return;
+            function loadProfile() {
+                const user = JSON.parse(localStorage.getItem('flowerdoor-user')) || { name: 'Guest User', email: 'guest@flowerdoor.com', avatar: 'https://cdn-icons-png.flaticon.com/128/64/64572.png' };
+                document.getElementById('profileName').innerText = user.name;
+                document.getElementById('profileEmail').innerText = user.email;
+                document.getElementById('profileImg').src = user.avatar || 'https://cdn-icons-png.flaticon.com/128/64/64572.png';
             }
 
-            container.innerHTML = allOrders.map(order => `
+            function editProfile() {
+                const user = JSON.parse(localStorage.getItem('flowerdoor-user')) || { name: 'Guest User', email: 'guest@flowerdoor.com' };
+                document.getElementById('editNameInput').value = user.name;
+                document.getElementById('editEmailInput').value = user.email;
+                new bootstrap.Modal(document.getElementById('editProfileModal')).show();
+            }
+
+            function saveProfile() {
+                const name = document.getElementById('editNameInput').value;
+                const email = document.getElementById('editEmailInput').value;
+                const fileInput = document.getElementById('editAvatarInput');
+
+                let user = JSON.parse(localStorage.getItem('flowerdoor-user')) || {};
+                user.name = name;
+                user.email = email;
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        user.avatar = e.target.result; // Save Base64
+                        localStorage.setItem('flowerdoor-user', JSON.stringify(user));
+                        loadProfile(); // Update UI
+                        bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    localStorage.setItem('flowerdoor-user', JSON.stringify(user));
+                    loadProfile();
+                    bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+                }
+            }
+
+            function loadOrders() {
+                const allOrders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
+                // In a real app we would filter by user ID, here we show all local orders for demo
+
+                const container = document.getElementById('orderHistory');
+
+                if (allOrders.length === 0) {
+                    container.innerHTML = '<p class="text-center text-muted">No orders yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = allOrders.map(order => `
                 <div class="card mb-3 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -134,24 +155,24 @@
             `).join('');
 
 
-        }
-
-        function reorder(orderId) {
-            const allOrders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
-            const order = allOrders.find(o => o.id === orderId);
-            if (order) {
-                localStorage.setItem("flowerdoor-cart", JSON.stringify(order.items));
-                alert("Items added to cart! Redirecting to checkout...");
-                window.location.href = "checkout.html";
             }
-        }
 
-        function loadWishlist() {
-            const wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
-            const container = document.getElementById('wishlistContainer');
+            function reorder(orderId) {
+                const allOrders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
+                const order = allOrders.find(o => o.id === orderId);
+                if (order) {
+                    localStorage.setItem("flowerdoor-cart", JSON.stringify(order.items));
+                    alert("Items added to cart! Redirecting to checkout...");
+                    window.location.href = "checkout.html";
+                }
+            }
 
-            if (wishlist.length > 0) {
-                container.innerHTML = wishlist.map(item => `
+            function loadWishlist() {
+                const wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
+                const container = document.getElementById('wishlistContainer');
+
+                if (wishlist.length > 0) {
+                    container.innerHTML = wishlist.map(item => `
                     <div class="col-md-4 col-6 mb-3">
                         <div class="card h-100 border-0 shadow-sm">
                             <img src="${item.image || 'https://via.placeholder.com/150'}" class="card-img-top" style="height: 150px; object-fit: cover;">
@@ -163,18 +184,18 @@
                         </div>
                     </div>
                 `).join('');
-            } else {
-                container.innerHTML = '<div class="col-12"><p class="text-center text-muted">No favorites yet. Go explore!</p></div>';
+                } else {
+                    container.innerHTML = '<div class="col-12"><p class="text-center text-muted">No favorites yet. Go explore!</p></div>';
+                }
             }
-        }
 
-        function removeFromWishlist(name) {
-            let wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
-            wishlist = wishlist.filter(item => item.name !== name);
-            localStorage.setItem('flowerdoor-wishlist', JSON.stringify(wishlist));
-            loadWishlist(); // Re-render
-        }
-    </script>
+            function removeFromWishlist(name) {
+                let wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
+                wishlist = wishlist.filter(item => item.name !== name);
+                localStorage.setItem('flowerdoor-wishlist', JSON.stringify(wishlist));
+                loadWishlist(); // Re-render
+            }
+        </script>
 </body>
 
 </html>
