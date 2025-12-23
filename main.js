@@ -112,8 +112,8 @@
       ...products.manga.filter(p => p.featured)
     ].slice(0, 6); // Just top 6 for home
 
-    homeSpecialsContainer.innerHTML = specials.map(item => `
-      <figure class="col-lg-4 col-md-6 col-6 text-center product-box">
+    homeSpecialsContainer.innerHTML = specials.map((item, index) => `
+      <figure class="col-lg-4 col-md-6 col-6 text-center product-box" data-aos="fade-up" data-aos-delay="${index * 100}">
         <img src="${item.image}" class="img-fluid" alt="${item.name}" />
         <h3>₹ ${item.price}</h3>
         <p>${item.name}</p>
@@ -147,6 +147,7 @@
     hotBrews.forEach(item => {
       const div = document.createElement('div');
       div.className = 'menu-item';
+      div.setAttribute('data-aos', 'fade-up');
       div.innerHTML = `
             <h5>${item.name} <span class="price-tag">₹ ${item.price}</span></h5>
             <small class="text-muted">${item.description}</small>
@@ -161,6 +162,7 @@
     sweetTreats.forEach(item => {
       const div = document.createElement('div');
       div.className = 'menu-item';
+      div.setAttribute('data-aos', 'fade-up');
       div.innerHTML = `
             <h5>${item.name} <span class="price-tag">₹ ${item.price}</span></h5>
             <small class="text-muted">${item.description}</small>
@@ -179,7 +181,7 @@
       const div = document.createElement('div');
       div.className = 'col-md-4';
       div.innerHTML = `
-            <div class="product-box text-center">
+            <div class="product-box text-center" data-aos="fade-up">
                 <img src="${item.image}" class="img-fluid mb-3 rounded" alt="${item.name}">
                 <h4>${item.name}</h4>
                 <p>${item.description}</p>
@@ -197,8 +199,8 @@
   // ================= DYNAMIC RENDERING (FLOWERS PAGE) =================
   const flowerGrid = document.getElementById("flower-grid");
   if (flowerGrid && typeof products !== 'undefined') {
-    flowerGrid.innerHTML = products.flowers.map(item => `
-      <figure class="col-lg-4 col-md-4 col-6 text-center product-box">
+    flowerGrid.innerHTML = products.flowers.map((item, index) => `
+      <figure class="col-lg-4 col-md-4 col-6 text-center product-box" data-aos="fade-up" data-aos-delay="${index * 50}">
         <img src="${item.image}" class="img-fluid" alt="${item.name}" />
         <h3>₹ ${item.price}</h3>
         <p>${item.name}</p>
@@ -211,8 +213,8 @@
   const mangaGrid = document.getElementById("manga-grid");
   if (mangaGrid && typeof products !== 'undefined') {
     const mangas = products.manga.filter(m => m.category !== 'Set');
-    mangaGrid.innerHTML = mangas.map(item => `
-      <div class="col-xl-3 col-lg-3 col-md-4 col-6 mb-4">
+    mangaGrid.innerHTML = mangas.map((item, index) => `
+      <div class="col-xl-3 col-lg-3 col-md-4 col-6 mb-4" data-aos="fade-up" data-aos-delay="${index * 50}">
         <div class="manga-box text-center">
           <img src="${item.image}" class="img-fluid manga-cover" alt="${item.name}" />
           <h4>${item.name}</h4>
