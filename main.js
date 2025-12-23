@@ -101,6 +101,24 @@
     cartModal.addEventListener('show.bs.modal', renderCart);
   }
 
+  // ================= PRELOADER LOGIC =================
+  const preloader = document.createElement('div');
+  preloader.id = 'preloader';
+  preloader.innerHTML = `
+      <img src="https://cdn-icons-png.flaticon.com/128/346/346167.png" class="loader-flower" alt="Loading...">
+      <h4 class="mt-3 text-muted" style="letter-spacing: 2px;">BLOOMING...</h4>
+  `;
+  document.body.prepend(preloader);
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      preloader.style.opacity = "0";
+      setTimeout(() => {
+        preloader.remove();
+      }, 500);
+    }, 800); // Small delay to let user see it
+  });
+
   // ================= DYNAMIC RENDERING (HOME) =================
   const homeSpecialsContainer = document.getElementById("home-specials");
   const reviewsContainer = document.getElementById("reviews-container");
