@@ -20,7 +20,7 @@
 
 html {
   overflow-y: scroll;
-  /* Force vertical scrollbar */
+  /* Force scrollbar to prevent layout shift */
   min-height: 100%;
 }
 
@@ -37,103 +37,7 @@ body {
   /* Prevent horizontal scroll */
 }
 
-/* Dark Mode Palette (Coffee/Dark Academia) */
-body.dark-mode {
-  --bg-cream: #2c241b;
-  --text-dark: #e6ccb2;
-  --panel-bg: #3e3228;
-  --white: #1a1510;
-  --shadow-color: rgba(0, 0, 0, 0.6);
-  --secondary-color: #5d4037;
-  --primary-color: #d4a373;
-  --btn-hover: #b08968;
-}
-
-body.dark-mode .accordion-button {
-  background-color: var(--panel-bg);
-  color: #ffffff;
-}
-
-body.dark-mode .accordion-button:not(.collapsed) {
-  background-color: var(--secondary-color);
-  color: #ffffff;
-}
-
-body.dark-mode .accordion-body {
-  background-color: var(--bg-cream);
-  color: #ffffff;
-}
-
-/* ================= FLOATING DARK MODE BUTTON ================= */
-.theme-toggle-btn {
-  position: fixed;
-  top: 85px;
-  /* Moved down slightly to avoid header conflict */
-  right: 20px;
-  z-index: 1000;
-  background: var(--white);
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  color: var(--text-dark) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.theme-toggle-btn:hover {
-  transform: rotate(15deg) scale(1.1);
-}
-
-/* ================= LOGO ================= */
-.logo img {
-  max-width: 80px;
-  height: auto;
-}
-
-/* ================= NAVBAR ================= */
-.menu .nav-link {
-  color: var(--text-dark);
-  border-radius: 20px;
-  padding: 8px 20px;
-  transition: all 0.3s ease;
-}
-
-.menu a:hover,
-.menu a.active {
-  background-color: var(--primary-color);
-  color: var(--white) !important;
-  transform: translateY(-2px);
-}
-
-/* ================= BANNER ================= */
-.banner {
-  background: linear-gradient(135deg, var(--panel-bg), var(--bg-cream));
-  padding: 40px;
-  border-radius: 30px;
-  margin-top: 30px;
-  border: 1px solid var(--secondary-color);
-  box-shadow: 0 10px 30px var(--shadow-color);
-  position: relative;
-  overflow: hidden;
-}
-
-.banner::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 200px;
-  height: 200px;
-  background: var(--primary-color);
-  opacity: 0.1;
-  border-radius: 50%;
-}
-
+/* ... skipped ... */
 .banner-title {
   font-size: 3.5rem;
   /* Reduced for better fit */
