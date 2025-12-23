@@ -141,14 +141,7 @@
                 </div>
             `).join('');
 
-            // Favorites (Mock logic: just take items from last order)
-            const favList = document.getElementById('favoritesList');
-            if (allOrders.length > 0) {
-                const lastItems = allOrders[0].items.slice(0, 3);
-                favList.innerHTML = lastItems.map(i => `<li class="list-group-item bg-transparent"><i class="fa-solid fa-heart text-danger"></i> ${i.name}</li>`).join('');
-            } else {
-                favList.innerHTML = '<li class="list-group-item bg-transparent">No favorites yet.</li>';
-            }
+
         }
 
         function reorder(orderId) {
