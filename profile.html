@@ -160,6 +160,35 @@
                 window.location.href = "checkout.html";
             }
         }
+
+        function loadWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
+            const container = document.getElementById('wishlistContainer');
+
+            if (wishlist.length > 0) {
+                container.innerHTML = wishlist.map(item => `
+                    <div class="col-md-4 col-6 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <img src="${item.image || 'https://via.placeholder.com/150'}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <div class="card-body text-center p-2">
+                                <h6 class="card-title text-truncate">${item.name}</h6>
+                                <p class="card-text text-muted mb-1">₹ ${item.price}</p>
+                                <button class="btn btn-sm btn-outline-danger w-100" onclick="removeFromWishlist('${item.name}')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="col-12"><p class="text-center text-muted">No favorites yet. Go explore!</p></div>';
+            }
+        }
+
+        function removeFromWishlist(name) {
+            let wishlist = JSON.parse(localStorage.getItem('flowerdoor-wishlist')) || [];
+            wishlist = wishlist.filter(item => item.name !== name);
+            localStorage.setItem('flowerdoor-wishlist', JSON.stringify(wishlist));
+            loadWishlist(); // Re-render
+        }
     </script>
 </body>
 

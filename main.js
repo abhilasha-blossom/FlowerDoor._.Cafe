@@ -165,9 +165,10 @@
     const hotBrews = products.cafe.filter(p => p.category === "Hot Brews");
     hotBrews.forEach(item => {
       const div = document.createElement('div');
-      div.className = 'menu-item';
+      div.className = 'menu-item position-relative';
       div.setAttribute('data-aos', 'fade-up');
       div.innerHTML = `
+            <button class="fav-btn" data-name="${item.name}" data-img="${item.image || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93'}" data-price="${item.price}" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 0.8rem;"><i class="fa-regular fa-heart"></i></button>
             <h5>${item.name} <span class="price-tag">₹ ${item.price}</span></h5>
             <small class="text-muted">${item.description}</small>
             <button class="btn btn-sm pastel-btn mt-2" data-name="${item.name}" data-price="${item.price}">Order Now</button>
