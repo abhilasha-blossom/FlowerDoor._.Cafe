@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Flowerdoor Café - Admin</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <link rel="stylesheet" href="MyCafe.css?v=6" />
+    <style>
+        .admin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 🌙 FLOATING DARK MODE BUTTON -->
+    <button id="themeToggle" class="theme-toggle-btn">
+        <i id="themeIcon" class="fa-solid fa-moon"></i>
+    </button>
+
+    <header class="container pt-4 pb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="text-primary fw-bold"><i class="fa-solid fa-user-shield"></i> Admin Dashboard</h2>
+            <a href="MyCafe.html" class="btn btn-outline-secondary rounded-pill">Back to Café</a>
+        </div>
+    </header>
+
+    <div class="container pb-5">
+        <!-- STATS -->
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="admin-card">
+                    <h5 class="text-muted">Total Revenue</h5>
+                    <h2 class="fw-bold" id="totalRevenue">₹ 0</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-card" style="border-left-color: var(--secondary-color);">
+                    <h5 class="text-muted">Total Orders</h5>
+                    <h2 class="fw-bold" id="totalOrders">0</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="admin-card" style="border-left-color: #4caf50;">
+                    <h5 class="text-muted">Pending Orders</h5>
+                    <h2 class="fw-bold" id="pendingOrders">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS TABLE -->
+        <div class="pastel-box p-4" style="background: white;">
+            <h4 class="mb-4">Recent Orders</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="noOrdersMsg" class="text-center text-muted mt-3" style="display:none;">No orders found.</p>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-danger btn-sm" onclick="clearAllOrders()">Reset All Data (Debug)</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        function renderDashboard() {
+            const orders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
+            const tbody = document.getElementById("ordersBody");
+            const noMsg = document.getElementById("noOrdersMsg");
+
+            // Stats
+            document.getElementById("totalOrders").innerText = orders.length;
+            const revenue = orders.reduce((sum, o) => sum + o.total, 0);
+            document.getElementById("totalRevenue").innerText = "₹ " + revenue;
+            document.getElementById("pendingOrders").innerText = orders.filter(o => o.status === 'Pending').length;
+
+            if (orders.length === 0) {
+                tbody.innerHTML = "";
+                noMsg.style.display = "block";
+                return;
+            } else {
+                noMsg.style.display = "none";
+            }
+
+            tbody.innerHTML = orders.map((order, index) => {
+                const badgeClass = order.status === 'Pending' ? 'bg-warning text-dark' : 'bg-success';
+                const itemsList = order.items.map(i => `${i.name} (x${i.quantity})`).join(', ');
+
+                return `
+                    <tr>
+                        <td class="fw-bold text-primary">${order.id}</td>
+                        <td>${order.date.split(',')[0]}</td>
+                        <td>
+                            <div class="fw-bold">${order.customer.name}</div>
+                            <small class="text-muted">${order.customer.phone}</small>
+                        </td>
+                        <td><small>${itemsList}</small></td>
+                        <td class="fw-bold">₹ ${order.total}</td>
+                        <td><span class="badge ${badgeClass}">${order.status}</span></td>
+                        <td>
+                            ${order.status === 'Pending'
+                        ? `<button class="btn btn-sm btn-outline-success" onclick="updateStatus(${index}, 'Delivered')"><i class="fa-solid fa-check"></i> Complete</button>`
+                        : `<span class="text-muted"><i class="fa-solid fa-check-double"></i> Done</span>`
+                    }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateStatus(index, status) {
+            const orders = JSON.parse(localStorage.getItem("flowerdoor-orders")) || [];
+            if (orders[index]) {
+                orders[index].status = status;
+                localStorage.setItem("flowerdoor-orders", JSON.stringify(orders));
+                renderDashboard();
+            }
+        }
+
+        function clearAllOrders() {
+            if (confirm("Are you sure you want to delete all orders?")) {
+                localStorage.removeItem("flowerdoor-orders");
+                renderDashboard();
+            }
+        }
+
+        // Auto-refresh every 30 seconds to simulate "live" dashboard
+        setInterval(renderDashboard, 30000);
+
+        // Initial Load
+        document.addEventListener("DOMContentLoaded", renderDashboard);
+    </script>
+</body>
+
+</html>

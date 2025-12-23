@@ -101,11 +101,133 @@
     cartModal.addEventListener('show.bs.modal', renderCart);
   }
 
-  // ================= ORDER BUTTON LOGIC =================
-  const orderButtons = document.querySelectorAll(".pastel-btn");
+  // ================= DYNAMIC RENDERING (HOME) =================
+  const homeSpecialsContainer = document.getElementById("home-specials");
+  const reviewsContainer = document.getElementById("reviews-container");
 
-  orderButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
+  if (homeSpecialsContainer && typeof products !== 'undefined') {
+    const specials = [
+      ...products.cafe.filter(p => p.featured),
+      ...products.flowers.filter(p => p.featured),
+      ...products.manga.filter(p => p.featured)
+    ].slice(0, 6); // Just top 6 for home
+
+    homeSpecialsContainer.innerHTML = specials.map(item => `
+      <figure class="col-xl-4 col-6 text-center product-box">
+        <img src="${item.image}" class="img-fluid" alt="${item.name}" />
+        <h3>₹ ${item.price}</h3>
+        <p>${item.name}</p>
+        <button class="btn pastel-btn" data-name="${item.name}" data-price="${item.price}">Order Now</button>
+      </figure>
+    `).join('');
+  }
+
+  if (reviewsContainer && typeof products !== 'undefined') {
+    reviewsContainer.innerHTML = products.reviews.map((review, index) => `
+      <div class="carousel-item ${index === 0 ? 'active' : ''}">
+        <div class="review-card text-center mx-auto p-4">
+          <p class="fst-italic">${review.text}</p>
+          <h6 class="fw-bold mt-2">— ${review.author}</h6>
+          <p class="text-warning fs-4">
+            ${'<i class="fa-solid fa-star"></i>'.repeat(review.stars)}
+            ${'<i class="fa-regular fa-star"></i>'.repeat(5 - review.stars)}
+          </p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ================= DYNAMIC RENDERING (MENU PAGE) =================
+  const hotBrewsContainer = document.getElementById("hot-brews-container");
+  const sweetTreatsContainer = document.getElementById("sweet-treats-container");
+  const menuFlowersContainer = document.getElementById("menu-flowers-container");
+
+  if (hotBrewsContainer && typeof products !== 'undefined') {
+    const hotBrews = products.cafe.filter(p => p.category === "Hot Brews");
+    hotBrews.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      div.innerHTML = `
+            <h5>${item.name} <span class="price-tag">₹ ${item.price}</span></h5>
+            <small class="text-muted">${item.description}</small>
+            <button class="btn btn-sm pastel-btn mt-2" data-name="${item.name}" data-price="${item.price}">Order Now</button>
+        `;
+      hotBrewsContainer.appendChild(div);
+    });
+  }
+
+  if (sweetTreatsContainer && typeof products !== 'undefined') {
+    const sweetTreats = products.cafe.filter(p => p.category === "Sweet Treats");
+    sweetTreats.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      div.innerHTML = `
+            <h5>${item.name} <span class="price-tag">₹ ${item.price}</span></h5>
+            <small class="text-muted">${item.description}</small>
+            <button class="btn btn-sm pastel-btn mt-2" data-name="${item.name}" data-price="${item.price}">Order Now</button>
+        `;
+      sweetTreatsContainer.appendChild(div);
+    });
+  }
+
+  if (menuFlowersContainer && typeof products !== 'undefined') {
+    // Keep the "Custom Arrangement" card which is the last child usually
+    const customCard = menuFlowersContainer.querySelector('.col-md-4:last-child');
+    menuFlowersContainer.innerHTML = ''; // Clear it
+
+    products.flowers.slice(0, 2).forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'col-md-4';
+      div.innerHTML = `
+            <div class="product-box text-center">
+                <img src="${item.image}" class="img-fluid mb-3 rounded" alt="${item.name}">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+                <h3>₹ ${item.price}</h3>
+                <button class="btn pastel-btn mt-2" data-name="${item.name}" data-price="${item.price}">Order Now</button>
+            </div>
+        `;
+      menuFlowersContainer.appendChild(div);
+    });
+
+    // Add custom card back
+    if (customCard) menuFlowersContainer.appendChild(customCard);
+  }
+
+  // ================= DYNAMIC RENDERING (FLOWERS PAGE) =================
+  const flowerGrid = document.getElementById("flower-grid");
+  if (flowerGrid && typeof products !== 'undefined') {
+    flowerGrid.innerHTML = products.flowers.map(item => `
+      <figure class="col-xl-4 col-6 text-center product-box">
+        <img src="${item.image}" class="img-fluid" alt="${item.name}" />
+        <h3>₹ ${item.price}</h3>
+        <p>${item.name}</p>
+        <button class="btn pastel-btn" data-name="${item.name}" data-price="${item.price}">Order Now</button>
+      </figure>
+    `).join('');
+  }
+
+  // ================= DYNAMIC RENDERING (MANGA PAGE) =================
+  const mangaGrid = document.getElementById("manga-grid");
+  if (mangaGrid && typeof products !== 'undefined') {
+    const mangas = products.manga.filter(m => m.category !== 'Set');
+    mangaGrid.innerHTML = mangas.map(item => `
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="manga-box text-center">
+          <img src="${item.image}" class="img-fluid manga-cover" alt="${item.name}" />
+          <h4>${item.name}</h4>
+          <p class="text-muted">${item.genre}</p>
+          <button class="btn pastel-btn btn-sm">Read More</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ================= ORDER BUTTON LOGIC (DELEGATED) =================
+  document.body.addEventListener("click", (e) => {
+    if (e.target.classList.contains("pastel-btn")) {
+      const btn = e.target;
+
       // Prevent default if it is a link styled as a button, unless it has a specific href
       if (btn.tagName === "A" && btn.getAttribute("href") && btn.getAttribute("href") !== "#") {
         return;
@@ -116,49 +238,50 @@
         e.preventDefault();
 
         // Extract Product Info
-        let name = "Unknown Item";
-        let price = 0;
+        let name = btn.getAttribute("data-name");
+        let price = parseInt(btn.getAttribute("data-price"));
 
-        const productBox = btn.closest(".product-box");
-        const menuItem = btn.closest(".menu-item");
+        // Fallback for non-dynamic pages (legacy support)
+        if (!name || isNaN(price)) {
+          const productBox = btn.closest(".product-box");
+          const menuItem = btn.closest(".menu-item");
 
-        if (productBox) {
-          name = productBox.querySelector("p")?.innerText || "Unknown Item";
-          const priceText = productBox.querySelector("h3")?.innerText || "0";
-          price = parseInt(priceText.replace(/[^0-9]/g, "")) || 0;
-        } else if (menuItem) {
-          const h5 = menuItem.querySelector("h5");
-          if (h5) {
-            // Get text node only (name)
-            name = Array.from(h5.childNodes)
-              .filter(node => node.nodeType === Node.TEXT_NODE)
-              .map(node => node.textContent.trim())
-              .join(" ");
-
-            const priceTag = h5.querySelector(".price-tag");
-            const priceText = priceTag?.innerText || "0";
+          if (productBox) {
+            name = productBox.querySelector("p")?.innerText || "Unknown Item";
+            const priceText = productBox.querySelector("h3")?.innerText || "0";
             price = parseInt(priceText.replace(/[^0-9]/g, "")) || 0;
+          } else if (menuItem) {
+            const h5 = menuItem.querySelector("h5");
+            if (h5) {
+              name = Array.from(h5.childNodes)
+                .filter(node => node.nodeType === Node.TEXT_NODE)
+                .map(node => node.textContent.trim())
+                .join(" ");
+              const priceTag = h5.querySelector(".price-tag");
+              const priceText = priceTag?.innerText || "0";
+              price = parseInt(priceText.replace(/[^0-9]/g, "")) || 0;
+            }
           }
         }
 
         console.log("Adding to cart:", name, price);
         if (price > 0) {
           addToCart(name, price);
+
+          // Simple visual feedback
+          const originalText = btn.innerText;
+          btn.innerText = "Added! 🌸";
+          btn.style.backgroundColor = "#4caf50"; // Green success color
+          btn.disabled = true;
+
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = ""; // Revert to CSS default
+            btn.disabled = false;
+          }, 2000);
         }
-
-        // Simple visual feedback
-        const originalText = btn.innerText;
-        btn.innerText = "Added! 🌸";
-        btn.style.backgroundColor = "#4caf50"; // Green success color
-        btn.disabled = true;
-
-        setTimeout(() => {
-          btn.innerText = originalText;
-          btn.style.backgroundColor = ""; // Revert to CSS default
-          btn.disabled = false;
-        }, 2000);
       }
-    });
+    }
   });
 
   // ================= MANGA SEARCH LOGIC =================
@@ -182,13 +305,70 @@
     });
   }
 
-  // ================= FLOWER BUILDER LOGIC =================
+  // ================= MANGA READER LOGIC =================
+  const mangaReaderModal = document.getElementById("mangaReaderModal");
+  if (mangaReaderModal) {
+    const titleEl = document.getElementById("mangaReaderTitle");
+    const imgEl = document.getElementById("currentMangaPage");
+    const prevBtn = document.getElementById("prevPage");
+    const nextBtn = document.getElementById("nextPage");
+    const pageInd = document.getElementById("pageIndicator");
+
+    let currentPage = 1;
+    let currentManga = "";
+    const totalPages = 3; // Simulated
+
+    // Delegate click for "Read More" buttons
+    document.body.addEventListener("click", (e) => {
+      if (e.target.innerText === "Read More") {
+        const box = e.target.closest(".manga-box");
+        if (box) {
+          currentManga = box.querySelector("h4").innerText;
+          titleEl.innerText = "Reading: " + currentManga;
+          currentPage = 1;
+          updatePage();
+          new bootstrap.Modal(mangaReaderModal).show();
+        }
+      }
+    });
+
+    function updatePage() {
+      // Simulating pages with placeholders or diverse images
+      // Ideally these would be real pages from data.js
+      imgEl.src = `https://dummyimage.com/600x900/fff/000&text=${currentManga}+Page+${currentPage}`;
+      pageInd.innerText = currentPage;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePage();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePage();
+      }
+    });
+  }
   const flowerForm = document.getElementById("flowerForm");
   if (flowerForm) {
     const totalDisplay = document.getElementById("totalPrice");
     const budgetInput = document.getElementById("budget");
     const budgetValue = document.getElementById("budgetValue");
     const inputs = flowerForm.querySelectorAll("input, select");
+    const visualVase = document.getElementById("vase-visual");
+
+    // Minimal icons for visualization
+    const flowerAssets = {
+      'roses': 'https://cdn-icons-png.flaticon.com/128/9620/9620771.png',
+      'lilies': 'https://cdn-icons-png.flaticon.com/128/9620/9620771.png',
+      'tulips': 'https://cdn-icons-png.flaticon.com/128/9620/9620771.png',
+      'sunflowers': 'https://cdn-icons-png.flaticon.com/128/9620/9620771.png',
+      'orchids': 'https://cdn-icons-png.flaticon.com/128/9620/9620771.png'
+    };
 
     function calculateTotal() {
       let total = parseInt(budgetInput.value) || 0;
@@ -205,12 +385,40 @@
         total += parseInt(palette.getAttribute("data-price")) || 0;
       }
 
-      // Flowers
-      flowerForm.querySelectorAll("input[type='checkbox']:checked").forEach(cb => {
+      // Flowers & Visuals
+      // First clear old dynamic flowers from vase
+      if (visualVase) {
+        const oldFlowers = visualVase.querySelectorAll('.dynamic-flower');
+        oldFlowers.forEach(el => el.remove());
+      }
+
+      flowerForm.querySelectorAll("input[type='checkbox']:checked").forEach((cb, index) => {
         total += parseInt(cb.getAttribute("data-price")) || 0;
+
+        if (visualVase) {
+          // Add visual flower
+          const img = document.createElement('img');
+          img.src = "https://cdn-icons-png.flaticon.com/128/1825/1825637.png"; // Generic Rose Icon
+          if (cb.id === 'sunflowers') img.src = "https://cdn-icons-png.flaticon.com/128/7394/7394208.png";
+          if (cb.id === 'tulips') img.src = "https://cdn-icons-png.flaticon.com/128/2926/2926343.png";
+
+          img.className = 'dynamic-flower';
+          img.style.position = 'absolute';
+          img.style.width = '60px';
+          img.style.zIndex = 1;
+
+          // Randomize position in the "vase" area
+          const randomX = 20 + (Math.random() * 60); // 20% to 80% left
+          const randomH = Math.random() * 50;
+          img.style.left = randomX + '%';
+          img.style.bottom = (40 + randomH) + 'px';
+          img.style.transform = `translateX(-50%) rotate(${Math.random() * 40 - 20}deg)`;
+
+          visualVase.appendChild(img);
+        }
       });
 
-      totalDisplay.innerText = "₹ " + total;
+      if (totalDisplay) totalDisplay.innerText = "₹ " + total;
     }
 
     inputs.forEach(input => {
@@ -227,6 +435,48 @@
     calculateTotal();
   }
 
+  // ================= LOFI WIDGET LOGIC =================
+  const lofiWidget = document.createElement("div");
+  lofiWidget.id = "lofi-widget";
+  lofiWidget.innerHTML = `
+    <div class="lofi-player">
+      <div class="lofi-icon"><i class="fa-solid fa-headphones"></i></div>
+      <div class="lofi-controls">
+        <span class="song-title">Cozy Beats</span>
+        <div class="d-flex gap-2 align-items-center">
+            <button id="lofi-prev" class="btn btn-sm btn-link text-white p-0"><i class="fa-solid fa-backward-step"></i></button>
+            <button id="lofi-toggle" class="btn btn-sm btn-light rounded-circle"><i class="fa-solid fa-play"></i></button>
+            <button id="lofi-next" class="btn btn-sm btn-link text-white p-0"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+      </div>
+      <audio id="lofi-audio" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112778.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  `;
+  document.body.appendChild(lofiWidget);
+
+  const audio = document.getElementById("lofi-audio");
+  const toggleBtn = document.getElementById("lofi-toggle");
+
+  // Set volume low for background ambience
+  if (audio) audio.volume = 0.3;
+
+  if (toggleBtn && audio) {
+    toggleBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          toggleBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+          lofiWidget.classList.add("playing");
+        }).catch(e => console.log("Audio play failed:", e));
+      } else {
+        audio.pause();
+        toggleBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        lofiWidget.classList.remove("playing");
+      }
+    });
+  }
+
   // ================= RESERVATION LOGIC =================
   const reservationForm = document.getElementById("reservationForm");
   if (reservationForm) {
@@ -239,6 +489,14 @@
 
       alert(`Table reserved for ${name} on ${date} at ${time} for ${guests} guests! 🌸`);
       reservationForm.reset();
+    });
+  }
+
+  // ================= AOS ANIMATION =================
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      once: true
     });
   }
 });

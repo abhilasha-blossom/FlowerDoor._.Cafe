@@ -391,3 +391,55 @@ body.dark-mode .accordion-body {
   background-color: var(--btn-hover);
 }
 
+/* ================= LOFI WIDGET ================= */
+#lofi-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    font-family: 'Poppins', sans-serif;
+}
+
+.lofi-player {
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    width: 50px; /* Collapsed state */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#lofi-widget:hover .lofi-player, .lofi-player.playing {
+    width: 220px; /* Expanded state */
+    background: var(--primary-color);
+}
+
+.lofi-icon {
+    font-size: 1.2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.lofi-controls {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-title {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0px); }
+}
+

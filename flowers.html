@@ -81,30 +81,8 @@
         <h2 class="text-center text-uppercase pt-2 pb-4 product-title">
             Signature Bouquets
         </h2>
-        <div class="row">
-            <figure class="col-xl-4 col-6 text-center product-box">
-                <img src="https://content.jdmagicbox.com/comp/def_content/florists/zpm47lwsjm-florists-15-qpoj8-250.jpg"
-                    class="img-fluid" alt="" />
-                <h3>₹ 450</h3>
-                <p>Pastel Dream</p>
-                <button class="btn pastel-btn">Order Now</button>
-            </figure>
-
-            <figure class="col-xl-4 col-6 text-center product-box">
-                <img src="https://i.pinimg.com/736x/2a/85/3b/2a853b4776366d92c780d79860f45d8e.jpg" class="img-fluid"
-                    alt="" />
-                <h3>₹ 550</h3>
-                <p>Spring Breeze</p>
-                <button class="btn pastel-btn">Order Now</button>
-            </figure>
-
-            <figure class="col-xl-4 col-6 text-center product-box">
-                <img src="https://i.pinimg.com/564x/d8/9d/10/d89d1045927f56d776a31818b744081c.jpg" class="img-fluid"
-                    alt="" />
-                <h3>₹ 600</h3>
-                <p>Rose Romance</p>
-                <button class="btn pastel-btn">Order Now</button>
-            </figure>
+        <div id="flower-grid" class="row">
+            <!-- Dynamic Content -->
         </div>
 
         <!-- CUSTOMIZATION SECTION -->
@@ -112,8 +90,9 @@
             Customize Your Bouquet
         </h2>
         <div class="row justify-content-center">
-            <div class="col-xl-8">
-                <div class="pastel-box p-5">
+            <!-- FORM -->
+            <div class="col-xl-7 col-md-12 mb-4">
+                <div class="pastel-box p-4 h-100">
                     <form id="flowerForm">
                         <div class="mb-3">
                             <label for="occasion" class="form-label">Occasion</label>
@@ -137,45 +116,38 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="palette" id="vibrant"
                                         data-price="50" />
-                                    <label class="form-check-label" for="vibrant">Vibrant & Bold (+₹50)</label>
+                                    <label class="form-check-label" for="vibrant">Vibrant (+₹50)</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="palette" id="whitegreen"
                                         data-price="80" />
-                                    <label class="form-check-label" for="whitegreen">Elegant White & Green
-                                        (+₹80)</label>
+                                    <label class="form-check-label" for="whitegreen">Elegant White (+₹80)</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Preferred Flowers (Select all that apply)</label>
+                            <label class="form-label">Preferred Flowers</label>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="roses" data-price="100">
                                         <label class="form-check-label" for="roses">Roses (+₹100)</label>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="lilies" data-price="80">
                                         <label class="form-check-label" for="lilies">Lilies (+₹80)</label>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="tulips" data-price="70">
                                         <label class="form-check-label" for="tulips">Tulips (+₹70)</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="sunflowers" data-price="60">
                                         <label class="form-check-label" for="sunflowers">Sunflowers (+₹60)</label>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="orchids" data-price="120">
                                         <label class="form-check-label" for="orchids">Orchids (+₹120)</label>
@@ -190,17 +162,29 @@
                             <input type="range" class="form-range" id="budget" min="300" max="5000" step="100"
                                 value="500">
                         </div>
-
-                        <div class="alert alert-light text-center border-0"
-                            style="background-color: var(--primary-color); color: white;">
-                            <h4 class="mb-0">Total Estimate: <span id="totalPrice">₹ 500</span></h4>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button type="button" class="btn pastel-btn btn-lg"
-                                onclick="alert('Custom order request sent! 🌸')">Request Custom Order</button>
-                        </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- VISUAL PREVIEW -->
+            <div class="col-xl-5 col-md-12">
+                <div class="pastel-box p-4 h-100 text-center d-flex flex-column">
+                    <h5 class="mb-3 text-muted">Live Preview</h5>
+                    <div id="vase-visual" class="flex-grow-1 position-relative mb-3"
+                        style="background: #fff8fc; border-radius: 15px; border: 2px dashed #e6ccb2; min-height: 300px; display: flex; justify-content: center; align-items: flex-end; overflow: hidden;">
+                        <!-- VASE -->
+                        <img src="https://cdn-icons-png.flaticon.com/512/3050/3050228.png"
+                            style="width: 80px; z-index: 2; margin-bottom: 20px;" alt="Vase">
+                        <!-- Flowers will be injected here absolutely -->
+                    </div>
+
+                    <div class="alert alert-light border-0"
+                        style="background-color: var(--primary-color); color: white;">
+                        <h4 class="mb-0">Total: <span id="totalPrice">₹ 500</span></h4>
+                    </div>
+
+                    <button type="button" class="btn pastel-btn btn-lg w-100 mt-2"
+                        onclick="alert('Custom order request sent! 🌸')">Request Custom Bouquet</button>
                 </div>
             </div>
         </div>
@@ -216,6 +200,7 @@
             </div>
         </div>
     </footer>
+    <script src="data.js"></script>
     <script src="main.js"></script>
     <!-- 🛒 CART MODAL -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
